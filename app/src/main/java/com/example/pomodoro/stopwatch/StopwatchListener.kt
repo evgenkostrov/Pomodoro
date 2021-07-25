@@ -8,7 +8,7 @@ interface StopwatchListener {
 
     fun reset(id: Int, enterMs: Long, currentMs: Long)
 
-    fun delete(id: Int, enterMs: Long, currentMs: Long)
+    fun delete(id: Int)
 
     fun toast()
 

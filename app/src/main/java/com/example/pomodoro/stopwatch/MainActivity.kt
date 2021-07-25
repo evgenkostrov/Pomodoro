@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
 
         binding.addNewStopwatchButton.setOnClickListener {
 
-            stopwatches.add(Stopwatch((stopwatches.size-1)+1, binding.enterTimer.text.toString().toLong()*1000,
-                binding.enterTimer.text.toString().toLong()*1000,false))
-
+            stopwatches.add(Stopwatch((stopwatches.size-1)+1,
+                binding.enterTimer.text.toString().toLong()*1000,
+                binding.enterTimer.text.toString().toLong()*1000,
+                false))
 
             stopwatchAdapter.submitList(stopwatches.toList())
-
         }
     }
 
@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         stopwatchAdapter.submitList(newTimer)
         stopwatches.clear()
         stopwatches.addAll(newTimer)
+        Log.i("TAG", "${stopwatches.joinToString("")}")
 
     }
 
@@ -76,30 +77,29 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         changeStopwatch(id, enterMs, enterMs)
     }
 
-    override fun delete(id: Int, enterMs: Long, currentMs: Long) {
+    override fun delete(id: Int) {
 //        stopwatches.remove(stopwatches.find { it.id == id })
 //        stopwatchAdapter.submitList(stopwatches.toList())
         val newTimers = mutableListOf<Stopwatch>()
         stopwatches.forEach {
-            if (it.id == id) {
-                newTimers.remove(Stopwatch(it.id, it.enterMs, it.currentMs ,it.isStarted))
-            } else {
+            if (it.id < id) {
                 newTimers.add(it)
+            }
+            if (it.id > id) {
+                newTimers.add(Stopwatch(it.id - 1, it.enterMs, it.currentMs, it.isStarted))
             }
         }
         stopwatchAdapter.submitList(newTimers)
         stopwatches.clear()
         stopwatches.addAll(newTimers)
-
-
+        Log.i("TAG", "${stopwatches.joinToString("")}")
     }
 
     override fun toast() {
-      Toast.makeText(this,"Stop Timer",Toast.LENGTH_SHORT).show()
+      Toast.makeText(this,"Stop Timer. Push restart",Toast.LENGTH_SHORT).show()
     }
 
     override fun id(id: Int?){
-
         idd=id
         Log.i("TAG", "$id $idd")
     }
@@ -117,10 +117,6 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         stopwatches.clear()
         stopwatches.addAll(newTimers)
     }
-
-
-
-
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {

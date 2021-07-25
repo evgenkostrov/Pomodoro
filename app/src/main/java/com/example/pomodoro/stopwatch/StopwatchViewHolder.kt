@@ -27,34 +27,22 @@ class StopwatchViewHolder(
 
     fun bind(stopwatch: Stopwatch) {
         binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
-
-
-
-
+        if(stopwatch.currentMs<100L) { stopwatch.currentMs=0L }
 
         if (stopwatch.isStarted) {
             startTimer(stopwatch)
-
             binding.custom.setPeriod(stopwatch.enterMs)
             current=stopwatch.enterMs-stopwatch.currentMs
             GlobalScope.launch {
                 while (current < stopwatch.enterMs ) {
-
                         current += INTERVAL
                         binding.custom.setCurrent(current)
                     delay(INTERVAL)
                 }
             }
-
-
         } else {
             stopTimer(stopwatch)
-
-
         }
-
-
-
         initButtonsListeners(stopwatch)
     }
 
@@ -62,34 +50,30 @@ class StopwatchViewHolder(
         binding.startPauseButton.setOnClickListener {
             if (stopwatch.isStarted) {
                 listener.stop(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
-            } else {
+            } else if(stopwatch.currentMs>100L){
                 listener.start(stopwatch.id)
+            }
+            else{
+                listener.toast()
             }
         }
 
         binding.restartButton.setOnClickListener {
             listener.reset(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
-//            binding.startPauseButton.text = "STOP"
             stopwatch.isStarted=false
-
         }
-
-
-            binding.deleteButton.setOnClickListener {
-
+        binding.deleteButton.setOnClickListener {
                 if(stopwatch.id==0)
                 {listener.id(null)}
 
-
-
-                listener.delete(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
-
+                listener.delete(stopwatch.id)
             }
     }
 
     private fun startTimer(stopwatch: Stopwatch) {
         binding.startPauseButton.text = "STOP"
         listener.id(stopwatch.id)
+
         timer?.cancel()
         timer = getCountDownTimer(stopwatch)
         timer?.start()
@@ -113,17 +97,15 @@ class StopwatchViewHolder(
             override fun onTick(millisUntilFinished: Long) {
 
                 binding.stopwatchTimer.text = millisUntilFinished.displayTime()
-
                 stopwatch.currentMs = millisUntilFinished
-
 
             }
 
             override fun onFinish() {
+
                 binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
                 listener.toast()
                 stopTimer(stopwatch)
-
 
             }
         }
@@ -153,11 +135,8 @@ class StopwatchViewHolder(
 
         private const val START_TIME = "00:00:00:00"
         private const val UNIT_TEN_MS = 10L
-//        private const val PERIOD = 1000L * 60L * 60L * 24L // Day
-
 
         private var INTERVAL = 100L
-        private const val PERIOD = 1000L * 30 // 30 sec
-        private const val REPEAT = 1 // 10 times
+
     }
 }
