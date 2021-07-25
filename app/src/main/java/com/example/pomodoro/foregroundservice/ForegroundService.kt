@@ -11,7 +11,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.pomodoro.R
-import com.example.pomodoro.stopwatch.MainActivity
+import com.example.pomodoro.MainActivity
 import kotlinx.coroutines.*
 
 class ForegroundService : Service() {
