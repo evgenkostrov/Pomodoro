@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.pomodoro.databinding.StopwatchItemBinding
 
-//import com.example.stopwatch.databinding.StopwatchItemBinding
 
 class StopwatchAdapter(
     private val listener: StopwatchListener

@@ -3,14 +3,9 @@ package com.example.pomodoro.stopwatch
 import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.os.CountDownTimer
-import android.util.Log
-import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
-//import com.example.customview.MainActivity
-import com.example.pomodoro.R
 import com.example.pomodoro.databinding.StopwatchItemBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,7 +22,7 @@ class StopwatchViewHolder(
 
     fun bind(stopwatch: Stopwatch) {
         binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
-        if(stopwatch.currentMs<100L) { stopwatch.currentMs=0L }
+//        if(stopwatch.currentMs<100L) { stopwatch.currentMs=0L }
 
         if (stopwatch.isStarted) {
             startTimer(stopwatch)
@@ -48,14 +43,16 @@ class StopwatchViewHolder(
 
     private fun initButtonsListeners(stopwatch: Stopwatch) {
         binding.startPauseButton.setOnClickListener {
-            if (stopwatch.isStarted) {
-                listener.stop(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
-            } else if(stopwatch.currentMs>100L){
-                listener.start(stopwatch.id)
-            }
-            else{
+            if(stopwatch.currentMs<100L){
                 listener.toast()
             }
+            if (stopwatch.isStarted) {
+                listener.stop(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
+            }
+            else if(stopwatch.currentMs>100L){
+                listener.start(stopwatch.id)
+            }
+
         }
 
         binding.restartButton.setOnClickListener {

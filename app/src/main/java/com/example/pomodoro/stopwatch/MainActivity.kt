@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pomodoro.databinding.ActivityMainBinding
 import com.example.pomodoro.foregroundservice.*
 
-//import com.example.stopwatch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
 
