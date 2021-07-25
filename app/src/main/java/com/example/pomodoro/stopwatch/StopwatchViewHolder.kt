@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.os.CountDownTimer
 import android.util.Log
+import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 //import com.example.customview.MainActivity
@@ -26,22 +27,33 @@ class StopwatchViewHolder(
 
     fun bind(stopwatch: Stopwatch) {
         binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
-        binding.custom.setPeriod(PERIOD)
+
+
+
+
 
         if (stopwatch.isStarted) {
             startTimer(stopwatch)
+
+            binding.custom.setPeriod(stopwatch.enterMs)
+            current=stopwatch.enterMs-stopwatch.currentMs
+            GlobalScope.launch {
+                while (current < stopwatch.enterMs ) {
+
+                        current += INTERVAL
+                        binding.custom.setCurrent(current)
+                    delay(INTERVAL)
+                }
+            }
+
+
         } else {
             stopTimer(stopwatch)
+
+
         }
 
-        GlobalScope.launch {
-            while (current < PERIOD * REPEAT) {
-                current += INTERVAL
 
-                binding.custom.setCurrent(current)
-                delay(INTERVAL)
-            }
-        }
 
         initButtonsListeners(stopwatch)
     }
@@ -49,20 +61,35 @@ class StopwatchViewHolder(
     private fun initButtonsListeners(stopwatch: Stopwatch) {
         binding.startPauseButton.setOnClickListener {
             if (stopwatch.isStarted) {
-                listener.stop(stopwatch.id, stopwatch.currentMs)
+                listener.stop(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
             } else {
                 listener.start(stopwatch.id)
             }
         }
 
-        binding.restartButton.setOnClickListener { listener.reset(stopwatch.id) }
+        binding.restartButton.setOnClickListener {
+            listener.reset(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
+//            binding.startPauseButton.text = "STOP"
+            stopwatch.isStarted=false
 
-        binding.deleteButton.setOnClickListener { listener.delete(stopwatch.id) }
+        }
+
+
+            binding.deleteButton.setOnClickListener {
+
+                if(stopwatch.id==0)
+                {listener.id(null)}
+
+
+
+                listener.delete(stopwatch.id, stopwatch.enterMs,stopwatch.currentMs)
+
+            }
     }
 
     private fun startTimer(stopwatch: Stopwatch) {
         binding.startPauseButton.text = "STOP"
-
+        listener.id(stopwatch.id)
         timer?.cancel()
         timer = getCountDownTimer(stopwatch)
         timer?.start()
@@ -89,11 +116,12 @@ class StopwatchViewHolder(
 
                 stopwatch.currentMs = millisUntilFinished
 
+
             }
 
             override fun onFinish() {
                 binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
-                Log.i("TAG", "Finish()")
+                listener.toast()
                 stopTimer(stopwatch)
 
 
@@ -128,8 +156,8 @@ class StopwatchViewHolder(
 //        private const val PERIOD = 1000L * 60L * 60L * 24L // Day
 
 
-        private const val INTERVAL = 100L
+        private var INTERVAL = 100L
         private const val PERIOD = 1000L * 30 // 30 sec
-        private const val REPEAT = 10 // 10 times
+        private const val REPEAT = 1 // 10 times
     }
 }

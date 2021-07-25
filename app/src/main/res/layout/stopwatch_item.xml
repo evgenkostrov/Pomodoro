@@ -28,46 +28,46 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="6dp"
             android:text="00:00:00:00"
-            android:textSize="24sp"
+            android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/start_pause_button"
             app:layout_constraintStart_toEndOf="@id/blinking_indicator"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <Button
             android:id="@+id/start_pause_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="6dp"
             android:background="@color/cardview_light_background"
             android:padding="8dp"
             android:text="START"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/restart_button"
+            app:layout_constraintEnd_toStartOf="@id/custom"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageButton
             android:id="@+id/restart_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="6dp"
             android:background="@color/cardview_light_background"
             android:padding="8dp"
             android:src="@drawable/ic_baseline_refresh_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/delete_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.example.pomodoro.customview.CustomView
             android:id="@+id/custom"
-            android:layout_width="41dp"
-            android:layout_height="33dp"
-
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             app:custom_color="@color/purple_700"
             app:custom_style="fill"
-
+            android:layout_marginEnd="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/restart_button"
             app:layout_constraintTop_toTopOf="parent"
@@ -75,8 +75,8 @@
 
         <ImageButton
             android:id="@+id/delete_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="10dp"
             android:background="@color/cardview_light_background"
             android:padding="8dp"

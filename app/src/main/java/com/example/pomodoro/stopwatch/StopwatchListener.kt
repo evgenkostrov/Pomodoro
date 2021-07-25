@@ -4,9 +4,13 @@ interface StopwatchListener {
 
     fun start(id: Int)
 
-    fun stop(id: Int, currentMs: Long)
+    fun stop(id: Int, enterMs: Long, currentMs: Long)
 
-    fun reset(id: Int)
+    fun reset(id: Int, enterMs: Long, currentMs: Long)
 
-    fun delete(id: Int)
+    fun delete(id: Int, enterMs: Long, currentMs: Long)
+
+    fun toast()
+
+    fun id(id: Int?)
 }
