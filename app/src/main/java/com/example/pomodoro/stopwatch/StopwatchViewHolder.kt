@@ -22,19 +22,10 @@ class StopwatchViewHolder(
 
     fun bind(stopwatch: Stopwatch) {
         binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
-//        if(stopwatch.currentMs<100L) { stopwatch.currentMs=0L }
-
+        binding.custom.setPeriod(stopwatch.enterMs)
+        binding.custom.setCurrent(stopwatch.enterMs - stopwatch.currentMs)
         if (stopwatch.isStarted) {
             startTimer(stopwatch)
-            binding.custom.setPeriod(stopwatch.enterMs)
-            current=stopwatch.enterMs-stopwatch.currentMs
-            GlobalScope.launch {
-                while (current < stopwatch.enterMs ) {
-                        current += INTERVAL
-                        binding.custom.setCurrent(current)
-                    delay(INTERVAL)
-                }
-            }
         } else {
             stopTimer(stopwatch)
         }
@@ -95,6 +86,7 @@ class StopwatchViewHolder(
 
                 binding.stopwatchTimer.text = millisUntilFinished.displayTime()
                 stopwatch.currentMs = millisUntilFinished
+                binding.custom.setCurrent(stopwatch.enterMs - stopwatch.currentMs)
 
             }
 
